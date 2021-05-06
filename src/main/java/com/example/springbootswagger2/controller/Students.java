@@ -48,8 +48,13 @@ public class Students {
           @Content(mediaType = "application/json", schema = @Schema(implementation = Student.class)) }),
       @ApiResponse(responseCode = "500", description = "Failed to find a student", content = @Content) })
   @GetMapping(value = "/student/{name}")
-  public Optional<Student> getStudent(
+  public Student getStudent(
       @Parameter(description = "Name of stdudent. Cannot be empty.", required = true, example = "Sajal") @PathVariable String name) {
-    return students.stream().filter(student -> student.getName().equals(name)).findFirst();
+    Optional<Student> foundStudent = students.stream().filter(student -> student.getName().equals(name)).findFirst();
+    if (foundStudent == null) {
+      throw new NotFoundException("Student not found");
+    }
+
+    return foundStudent.get();
   }
 }
