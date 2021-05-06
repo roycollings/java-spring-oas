@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.webjars.NotFoundException;
 
@@ -38,15 +40,20 @@ public class Students {
     return students;
   }
 
-  @Operation(summary = "Get a student", description = "Sometthing about getting a student by name.")
+  @Operation(summary = "Get a student", description = "Something about getting a student by name.")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Found the student", content = {
           @Content(mediaType = "application/json", schema = @Schema(implementation = Student.class)) }),
       @ApiResponse(responseCode = "500", description = "Student not found", content = @Content) })
   @GetMapping(value = "/student/{name}")
   public Student getStudent(
-      @Parameter(description = "Name of stdudent. Cannot be empty.", required = true, example = "Sajal") @PathVariable String name) {
+      @Parameter(description = "Name of student.", required = true, example = "Sajal") @PathVariable String name) {
     return students.stream().filter(student -> student.getName().equals(name)).findFirst()
         .orElseThrow(() -> new NotFoundException(">>> MSG 1"));
+  }
+
+  @PostMapping(value = "/student")
+  public void addStudent(@RequestBody Student student) {
+    students.add(student);
   }
 }
