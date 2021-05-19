@@ -11,4 +11,4 @@ http://localhost:8080/api-docs/
 http://localhost:8080/api-docs.yaml
 
 # Spec created at build time
-./swagger.yaml
+./src/test/resources/swagger.yaml
